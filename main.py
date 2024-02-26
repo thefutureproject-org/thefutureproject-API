@@ -20,7 +20,7 @@ app.include_router(leetcode.router)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Setup your scheduler on startup
+    # Setup the scheduler on startup
     leetcode_contest_schedule.setup_scheduling()
     yield
 
