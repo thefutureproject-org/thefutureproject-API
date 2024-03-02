@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 from .Leetcode_Contest.contest_status import contest_status
-from .. import schemas
+import schemas
 from .Database.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from .Database import models
 from sqlalchemy import text
+from typing import List
 
 
 router = APIRouter(
@@ -19,9 +20,8 @@ async def get_contest_status():
     return contest_status()
 
 
-@router.post("/contest/ranking")
+@router.post("/contest/ranking", response_model=List[schemas.Contest_Ranking_Out])
 async def get_contest_ranking(usernames: schemas.Contest_Ranking, db: Session = Depends(get_db)):
-    sql_query = text("SELECT * FROM contests WHERE id IN :ids")
-    result = db.execute(sql_query, {'ids': usernames}).fetchall()
-    contestants_list = [dict(row) for row in result]
-    return contestants_list
+    contests = db.query(models.Contest).filter(
+        models.Contest.username.in_(usernames.contestants_id)).all()
+    return contests
