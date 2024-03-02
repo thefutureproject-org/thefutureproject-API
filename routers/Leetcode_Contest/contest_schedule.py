@@ -11,8 +11,6 @@ import schedule
 # from pathlib import Path
 # sys.path.append(str(Path(__file__).parent.parent.parent))
 
-db = None
-
 
 def leetcode_contest_schedule():
     contest = contest_status()
@@ -20,7 +18,7 @@ def leetcode_contest_schedule():
     if contest["message"] != "No contest running at the moment.":
         contest_name = contest["message"]["titleSlug"]
         print(f"Scraping {contest_name}...")
-        contest_scrape(contest_name, db)
+        contest_scrape(contest_name)
 
 
 # Utility function to check if it's the correct biweekly Saturday
@@ -64,9 +62,7 @@ def run_scheduler():  # New function to handle the loop
         time.sleep(1)
 
 
-def setup_scheduling(dbs):
-    global db
-    db = dbs
+def setup_scheduling():
     print("Contest Scheduler is running...")
     # Weekly contest, every Sunday at 2:32 AM UTC
     schedule.every().sunday.at("02:32").do(lambda: schedule.every(

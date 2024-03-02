@@ -26,9 +26,9 @@ def make_dict(contestant_data, submission_data, question_ids):
     if str(question_ids[1]) in submission_data:
         problem_B_st = calculate_submission_time(
             submission_data[str(question_ids[1])]["date"])
-        problem_B_st = submission_data[str(question_ids[1])]["fail_count"]
+        problem_B_flc = submission_data[str(question_ids[1])]["fail_count"]
         data["B_st"] = problem_B_st
-        data["B_flc"] = problem_B_st
+        data["B_flc"] = problem_B_flc
 
     else:
         data["B_st"] = None
