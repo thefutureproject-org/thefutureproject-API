@@ -59,3 +59,4 @@ def setup_scheduling():
 
     scheduler_thread = threading.Thread(target=run_scheduler)
     scheduler_thread.start()
+    print("Contest Scheduler is running...")
