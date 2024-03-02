@@ -1,4 +1,7 @@
 from .time_decode import calculate_submission_time
+# import sys
+# from pathlib import Path
+# sys.path.append(str(Path(__file__).parent.parent.parent))
 
 
 def make_dict(contestant_data, submission_data, question_ids):
