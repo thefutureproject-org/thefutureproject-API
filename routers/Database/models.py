@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String
 class Contest(Base):
     __tablename__ = 'contests'
 
-    username = Column(String, primar_key=True, nullable=False)
+    username = Column(String, primary_key=True, nullable=False)
     rank = Column(Integer, nullable=False)
     finish_time = Column(String, nullable=False)
 

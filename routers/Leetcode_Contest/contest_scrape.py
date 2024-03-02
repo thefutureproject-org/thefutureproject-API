@@ -3,7 +3,7 @@ import requests
 import math
 import concurrent.futures
 # import time
-from make_dict import make_dict
+from .make_dict import make_dict
 from ..Database.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
