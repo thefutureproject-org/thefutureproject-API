@@ -3,8 +3,7 @@ from sqlalchemy import Column, Integer, String
 
 
 class Contest(Base):
-    def __init__(self, table_name):
-        self.__tablename__ = table_name
+    __tablename__ = 'contests'
 
     username = Column(String, primar_key=True, nullable=False)
     rank = Column(Integer, nullable=False)

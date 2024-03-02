@@ -2,10 +2,16 @@ import schedule
 import datetime
 import time
 import threading
+from .contest_status import contest_status
+from .contest_scrape import contest_scrape
 
 
 def leetcode_contest_schedule():
-    print("LeetCode Contest is running...")
+    contest = contest_status()
+    contest_name = contest["message"]["titleSlug"]
+    print(f"Scraping {contest_name}...")
+    contest_scrape(contest_name)
+
 
 # Utility function to check if it's the correct biweekly Saturday
 
