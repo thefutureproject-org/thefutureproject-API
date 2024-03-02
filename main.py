@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import leetcode, leetcode_contest_schedule
+from routers import leetcode
 from contextlib import asynccontextmanager
+
+from routers.Leetcode_Contest import contest_schedule
 
 app = FastAPI()
 
@@ -21,7 +23,7 @@ app.include_router(leetcode.router)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Setup the scheduler on startup
-    leetcode_contest_schedule.setup_scheduling()
+    contest_schedule.setup_scheduling()
     yield
 
 
