@@ -28,8 +28,7 @@ def scrape_each_page(page_number: int,  contest_name: str, db):
         for contestant, submission in zip(contestants, submissions):
             result = make_dict(contestant, submission, question_ids)
             # contestants_info[contestant["username"]] = result
-            contestant_info = models.Contest(
-                contest_name=contest_name, **result)
+            contestant_info = models.Contest(**result)
             db.add(contestant_info)
 
     except Exception as e:
@@ -42,6 +41,9 @@ def contest_scrape(contest_name: str, db: Session = Depends(get_db)):
         f"https://leetcode.com/contest/api/ranking/{contest_name}/?pagination=1&region=global").json()["user_num"]/25)
 
     # start_time = time.perf_counter()
+    sql_query = f'TRUNCATE TABLE {contest_name};'
+    db.execute(sql_query)
+    db.commit()
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(
