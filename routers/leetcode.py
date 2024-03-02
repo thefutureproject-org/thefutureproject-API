@@ -5,7 +5,6 @@ from .Database.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from .Database import models
-from sqlalchemy import text
 from typing import List
 
 

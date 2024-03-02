@@ -1,13 +1,20 @@
-import requests
-# import json
-import math
-import concurrent.futures
-# import time
-from .make_dict import make_dict
-from ..Database.database import get_db
-from sqlalchemy.orm import Session
+# from make_dict import make_dict
+# import sys
+from routers.Database import models
 from fastapi import Depends
-from ..Database import models
+from sqlalchemy.orm import Session
+from routers.Database.database import get_db
+from .make_dict import make_dict
+import concurrent.futures
+import math
+import requests
+# import sys
+# from pathlib import Path
+# sys.path.append(str(Path(__file__).parent.parent.parent))
+
+# import json
+# import time
+
 
 # contestants_info = {}
 
@@ -35,14 +42,13 @@ def scrape_each_page(page_number: int,  contest_name: str, db):
         print(f"Error occurred: {e}")
 
 
-def contest_scrape(contest_name: str, db: Session = Depends(get_db)):
+def contest_scrape(contest_name: str, db):
 
     total_pages = math.ceil(requests.get(
         f"https://leetcode.com/contest/api/ranking/{contest_name}/?pagination=1&region=global").json()["user_num"]/25)
 
     # start_time = time.perf_counter()
-    sql_query = f'TRUNCATE TABLE {contest_name};'
-    db.execute(sql_query)
+    db.query(models.Contest).delete()
     db.commit()
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -57,3 +63,6 @@ def contest_scrape(contest_name: str, db: Session = Depends(get_db)):
 
     # with open("contestants_info.json", "w") as file:
     #     json.dump(contestants_info, file, indent=4)
+
+
+# contest_scrape("biweekly-contest-125")

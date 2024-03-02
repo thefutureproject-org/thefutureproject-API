@@ -1,16 +1,26 @@
-import schedule
-import datetime
-import time
-import threading
-from .contest_status import contest_status
+# from contest_scrape import contest_scrape
+# from contest_status import contest_status
+# import sys
 from .contest_scrape import contest_scrape
+from .contest_status import contest_status
+import threading
+import time
+import datetime
+import schedule
+# import sys
+# from pathlib import Path
+# sys.path.append(str(Path(__file__).parent.parent.parent))
+
+db = None
 
 
 def leetcode_contest_schedule():
     contest = contest_status()
-    contest_name = contest["message"]["titleSlug"]
-    print(f"Scraping {contest_name}...")
-    contest_scrape(contest_name)
+    # print(contest)
+    if contest["message"] != "No contest running at the moment.":
+        contest_name = contest["message"]["titleSlug"]
+        print(f"Scraping {contest_name}...")
+        contest_scrape(contest_name, db)
 
 
 # Utility function to check if it's the correct biweekly Saturday
@@ -54,7 +64,10 @@ def run_scheduler():  # New function to handle the loop
         time.sleep(1)
 
 
-def setup_scheduling():
+def setup_scheduling(dbs):
+    global db
+    db = dbs
+    print("Contest Scheduler is running...")
     # Weekly contest, every Sunday at 2:32 AM UTC
     schedule.every().sunday.at("02:32").do(lambda: schedule.every(
         5).minutes.until("04:07").do(schedule_weekly_contest))
@@ -65,4 +78,6 @@ def setup_scheduling():
 
     scheduler_thread = threading.Thread(target=run_scheduler)
     scheduler_thread.start()
-    print("Contest Scheduler is running...")
+
+
+# leetcode_contest_schedule()
