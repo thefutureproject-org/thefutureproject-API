@@ -3,12 +3,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import leetcode
 from contextlib import asynccontextmanager
 from routers.Leetcode_Contest import contest_schedule
+import json
+import fcntl
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Setup the scheduler on startup
-    contest_schedule.setup_scheduling()
+    permission_file = "permission.json"
+    with open(permission_file, "r+") as file:
+        fcntl.flock(file, fcntl.LOCK_EX)
+        data = json.load(file)
+        if data['permission'] == 'yes':
+            data['permission'] = 'no'
+            file.seek(0)
+            json.dump(data, file)
+            file.truncate()
+            fcntl.flock(file, fcntl.LOCK_UN)
+            contest_schedule.setup_scheduling()
     yield
 
 app = FastAPI(lifespan=lifespan)
