@@ -5,7 +5,7 @@ from .contest_scrape import contest_scrape
 from .contest_status import contest_status
 import threading
 import time
-import datetime
+from datetime import datetime, timedelta
 import schedule
 # import sys
 # from pathlib import Path
@@ -14,7 +14,7 @@ import schedule
 
 def leetcode_contest_schedule():
     contest = contest_status()
-    # print(contest)
+    print("contest scraping running")
     if contest["message"] != "No contest running at the moment.":
         contest_name = contest["message"]["titleSlug"]
         print(f"Scraping {contest_name}...")
@@ -25,7 +25,7 @@ def leetcode_contest_schedule():
 
 
 def is_second_saturday(date):
-    first_target_date = datetime.datetime(2024, 3, 2)
+    first_target_date = datetime(2024, 3, 2)
     delta = date - first_target_date
     weeks_since_first_target = delta.days // 7
     return weeks_since_first_target % 2 == 0
@@ -34,7 +34,8 @@ def is_second_saturday(date):
 
 
 def schedule_weekly_contest():
-    now = datetime.datetime.utcnow()
+    print("Weekly contest checking")
+    now = datetime.utcnow()
     end_time = now.replace(hour=4, minute=7, second=0, microsecond=0)
     if now <= end_time:
         leetcode_contest_schedule()
@@ -45,35 +46,61 @@ def schedule_weekly_contest():
 
 
 def schedule_biweekly_contest():
-    now = datetime.datetime.utcnow()
-    if is_second_saturday(now):
-        end_time = now.replace(hour=16, minute=7, second=0, microsecond=0)
-        if now <= end_time:
-            leetcode_contest_schedule()
-        else:
-            return schedule.CancelJob
+    print("Biweekly contest checking")
+    now = datetime.utcnow()
+    end_time = now.replace(hour=16, minute=7, second=0, microsecond=0)
+    if now <= end_time:
+        leetcode_contest_schedule()
+    else:
+        return schedule.CancelJob
 
 # Setup initial scheduling
 
 
-def run_scheduler():  # New function to handle the loop
+def run_scheduler(weekly_scheduler, biweeekly_scheduler):  # New function to handle the loop
+    print("Scheduler running...")
     while True:
-        schedule.run_pending()
+        weekly_scheduler.run_pending()
+        biweeekly_scheduler.run_pending()
         time.sleep(1)
+
+
+def weekly_every_5_minutes():
+    i = 1
+    while True:
+        schedule_weekly_contest()
+        i += 1
+        time.sleep(300)
+        if (i == 19):
+            return
+
+
+def biweekly_every_5_minutes():
+    if is_second_saturday(datetime.utcnow()):
+        i = 1
+        while True:
+            schedule_biweekly_contest()
+            i += 1
+            time.sleep(300)
+            if (i == 19):
+                return
 
 
 def setup_scheduling():
     print("Contest Scheduler is running...")
     # Weekly contest, every Sunday at 2:32 AM UTC
-    schedule.every().sunday.at("02:32").do(lambda: schedule.every(
-        5).minutes.until("04:07").do(schedule_weekly_contest))
+    weekly_scheduler = schedule.Scheduler()
+    weekly_scheduler.every().sunday.at(
+        "08:02", "Asia/Kolkata").do(weekly_every_5_minutes)
 
     # Biweekly contest, every second Saturday at 2:32 PM UTC
-    schedule.every().saturday.at("14:32").do(lambda: schedule.every(5).minutes.until("16:07").do(
-        schedule_biweekly_contest) if is_second_saturday(datetime.datetime.utcnow()) else None)
+    biweeekly_scheduler = schedule.Scheduler()
+    biweeekly_scheduler.every().saturday.at(
+        "20:02", "Asia/Kolkata").do(biweekly_every_5_minutes)
 
-    scheduler_thread = threading.Thread(target=run_scheduler)
+    scheduler_thread = threading.Thread(
+        target=run_scheduler, args=(weekly_scheduler, biweeekly_scheduler))
     scheduler_thread.start()
 
 
-# leetcode_contest_schedule()
+# setup_scheduling()
