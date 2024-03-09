@@ -22,5 +22,5 @@ async def get_contest_status():
 @router.post("/contest/ranking", response_model=List[schemas.Contest_Ranking_Out])
 async def get_contest_ranking(usernames: schemas.Contest_Ranking, db: Session = Depends(get_db)):
     contests = db.query(models.Contest).filter(
-        models.Contest.username.in_(usernames.contestants_id)).all()
+        models.Contest.username.in_(usernames.contestants_ids)).all()
     return contests
