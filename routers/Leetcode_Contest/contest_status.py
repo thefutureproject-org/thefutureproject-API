@@ -41,7 +41,7 @@ def contest_status():
         "http": "http://nvkgvyfp-rotate:kccxhfu1bt2o@p.webshare.io:80/",
                 "https": "http://nvkgvyfp-rotate:kccxhfu1bt2o@p.webshare.io:80/"}, headers=headers).text
     soup = BeautifulSoup(response, 'html.parser')
-    print(soup)
+    # print(soup)
     json_data = soup.find('script', id='__NEXT_DATA__').string
     json_data = json.loads(json_data)
     response = json_data['props']['pageProps']['dehydratedState']['queries'][4]['state']['data']['topTwoContests']
