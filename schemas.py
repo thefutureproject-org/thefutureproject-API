@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 class Contest_Ranking(BaseModel):
-    contestants_id: List[str]
+    contestants_ids: List[str]
 
 
 class Contest_Ranking_Out(BaseModel):
@@ -18,6 +18,18 @@ class Contest_Ranking_Out(BaseModel):
     C_flc: Optional[int]
     D_st: Optional[str]
     D_flc: Optional[int]
+
+    class Config:
+        from_attributes = True
+
+
+class Stock_Market_Ticker(BaseModel):
+    tickers: List[str]
+
+
+class Stock_Market_Ticker_Out(BaseModel):
+    ticker: str
+    last_quote: float
 
     class Config:
         from_attributes = True
