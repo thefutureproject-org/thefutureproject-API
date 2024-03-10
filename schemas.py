@@ -33,3 +33,16 @@ class Stock_Market_Ticker_Out(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Contest_Info_In(BaseModel):
+    contest_name: str
+
+
+class Contest_Info_Out(BaseModel):
+    contest_name: str
+    contest_link: str
+    problems: dict
+
+    class Config:
+        from_attributes = True
