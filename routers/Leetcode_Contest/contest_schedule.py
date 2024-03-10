@@ -15,6 +15,7 @@ import schedule
 def leetcode_contest_schedule():
     contest = contest_status()
     print("contest scraping running")
+    # contest_scrape("weekly-contest-388")
     if contest["message"] != "No contest running at the moment.":
         contest_name = contest["message"]["titleSlug"]
         print(f"Scraping {contest_name}...")
@@ -37,6 +38,8 @@ def schedule_weekly_contest():
     print("Weekly contest checking")
     now = datetime.utcnow()
     end_time = now.replace(hour=4, minute=7, second=0, microsecond=0)
+    # leetcode_contest_schedule()
+
     if now <= end_time:
         leetcode_contest_schedule()
     else:
