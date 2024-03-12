@@ -46,3 +46,11 @@ class Contest_Info_Out(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Image_Out(BaseModel):
+    text: str
+    language: str
+
+    class Config:
+        from_attributes = True
