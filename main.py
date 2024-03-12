@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import leetcode, stock_data, ocr
+from routers import leetcode, stock_data, ocr, ipinfo
 from contextlib import asynccontextmanager
 from routers.Leetcode_Contest import contest_schedule
 import json
@@ -44,6 +44,7 @@ app.add_middleware(
 app.include_router(leetcode.router)
 app.include_router(stock_data.router)
 app.include_router(ocr.router)
+app.include_router(ipinfo.router)
 
 
 @app.get("/")
