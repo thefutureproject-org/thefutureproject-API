@@ -21,8 +21,8 @@ async def spacebin(txt):
 
 
 @router.post("/", status_code=200, summary="Paste any text or code")
-async def get_ip_info_route(txt, service:str|None=None):
-  if not service:
-    url=await spacebin(txt)
+async def paste_text(past: schemas.Paste_txt):
+  if past.service=="spacebin":
+    url=await spacebin(paste.txt)
     return {"url":url}
     
