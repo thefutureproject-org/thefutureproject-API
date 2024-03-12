@@ -59,3 +59,7 @@ class Image_Out(BaseModel):
 class Image_Url_In(BaseModel):
     url: str
     language: Optional[str] = "eng"
+
+
+class Ip_Info_In(BaseModel):
+    ip: str
