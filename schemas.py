@@ -63,3 +63,7 @@ class Image_Url_In(BaseModel):
 
 class Ip_Info_In(BaseModel):
     ip: str
+
+class Paste_txt(BaseModel):
+    txt:str
+    service: Optional[str] = "spacebin"
