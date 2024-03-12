@@ -54,3 +54,8 @@ class Image_Out(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Image_Url_In(BaseModel):
+    url: str
+    language: Optional[str] = "eng"
