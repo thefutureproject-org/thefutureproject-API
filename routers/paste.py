@@ -24,5 +24,8 @@ async def spacebin(txt):
 async def paste_text(past: schemas.Paste_txt):
   if past.service=="spacebin":
     url=await spacebin(paste.txt)
-    return {"url":url}
+    return {"success":"true","url":url}
+  else
+    return {"success":"false","msg":"service not found"}
+
     
