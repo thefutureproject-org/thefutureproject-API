@@ -63,3 +63,19 @@ class Image_Url_In(BaseModel):
 
 class Ip_Info_In(BaseModel):
     ip: str
+
+
+class Problem_Info_In(BaseModel):
+    title_slug: str
+
+
+class Problem_Info_Out(BaseModel):
+    question_id: int
+    title: str
+    difficulty: str
+    category: str
+    tags: List[str]
+    description: str
+
+    class Config:
+        from_attributes = True

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from .Leetcode_Contest.contest_status import contest_status
 from .Leetcode_Contest.contest_info import contest_info
+from .Leetcode_Contest.leetcode_problem_info import get_problem_info
 import schemas
 from .Database.database import get_db
 from sqlalchemy.orm import Session
@@ -30,3 +31,8 @@ async def get_contest_ranking(usernames: schemas.Contest_Ranking, db: Session = 
 @router.post("/contest/info", response_model=schemas.Contest_Info_Out)
 async def get_contest_info(contest_name: schemas.Contest_Info_In):
     return contest_info(contest_name.contest_name)
+
+
+@router.post("/problem/info", response_model=schemas.Problem_Info_Out)
+async def problem_info(problem: schemas.Problem_Info_In):
+    return get_problem_info(problem.title_slug)
