@@ -7,6 +7,10 @@ class settings(BaseSettings):
     DATABASE_PASSWORD: str
     DATABASE_NAME: str
     DATABASE_USERNAME: str
+    PROXIES: dict
+    LEETCODE_HEADER: dict
+    OCR_API_KEY: str
+    USER_AGENT: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

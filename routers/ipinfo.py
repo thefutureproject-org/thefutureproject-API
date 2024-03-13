@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup as bs
 
 from fastapi import APIRouter, HTTPException, status
 import schemas
+from config import settings
 
 
 router = APIRouter(
@@ -13,10 +14,7 @@ router = APIRouter(
 
 def get_ip_info(ip: str):
     url = f"https://scamalytics.com/ip/{ip}"
-    response = requests.get(url=url, proxies={
-        "http": "http://nvkgvyfp-rotate:kccxhfu1bt2o@p.webshare.io:80/",
-        "https": "http://nvkgvyfp-rotate:kccxhfu1bt2o@p.webshare.io:80/"
-    })
+    response = requests.get(url=url, proxies=settings.PROXIES)
     soup = bs(response.text, 'lxml')
     ip_score_div = soup.find("div", {"class": "score"})
     if not ip_score_div:
