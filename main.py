@@ -49,7 +49,7 @@ app.include_router(ipinfo.router)
 
 @app.get("/")
 async def main():
-    return {"message": "The Future Project"}
+    return {"message": "Welcome to The Future Project"}
 
 
 @app.get("/docs", include_in_schema=False)
