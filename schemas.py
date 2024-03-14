@@ -79,3 +79,8 @@ class Problem_Info_Out(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SpaceBin_txt_In(BaseModel):
+    txt: str
+    extension: Optional[str] = "none"
