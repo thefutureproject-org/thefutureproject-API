@@ -56,6 +56,9 @@ pip(3) install -r requirements.txt
 nano .env
 ```
 
+The sample is given in [`.env.sample`](https://github.com/thefutureproject-official/thefutureproject-API/blob/main/.env.sample).
+(You can either edit and rename the file or make a new file named `.env`.)
+
 ---
 
 ## Usage
