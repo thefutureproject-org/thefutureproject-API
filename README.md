@@ -6,16 +6,16 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/contributors"><img src="https://img.shields.io/github/contributors-anon/thefutureproject-official/thefutureproject-API?style=flat&color=blue" alt="Contributors badge" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/stargazers"><img src="https://img.shields.io/github/stars/thefutureproject-official/thefutureproject-API?style=flat&color=greygreen" alt="Stars Badge" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/fork"><img src="https://img.shields.io/github/forks/thefutureproject-official/thefutureproject-API?style=flat-square&color=orange" alt="Forks Badge" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/"><img src="https://img.shields.io/github/repo-size/thefutureproject-official/thefutureproject-API?style=flat-square&color=green" alt="Size Badge" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/contributors"><img src="https://img.shields.io/github/contributors-anon/thefutureproject-org/thefutureproject-API?style=flat&color=blue" alt="Contributors badge" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/stargazers"><img src="https://img.shields.io/github/stars/thefutureproject-org/thefutureproject-API?style=flat&color=greygreen" alt="Stars Badge" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/fork"><img src="https://img.shields.io/github/forks/thefutureproject-org/thefutureproject-API?style=flat-square&color=orange" alt="Forks Badge" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/"><img src="https://img.shields.io/github/repo-size/thefutureproject-org/thefutureproject-API?style=flat-square&color=green" alt="Size Badge" /></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-v3.12-blue" alt="Python" /></a>
-  <a href="https://www.codefactor.io/repository/github/thefutureproject-official/thefutureproject-api/overview/main"><img src="https://www.codefactor.io/repository/github/thefutureproject-official/thefutureproject-api/badge/main" alt="CodeFactor Badge" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/graphs/commit-activity/"><img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Commit Activity" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API"><img src="https://badges.frapsoft.com/os/v2/open-source.svg?v=103" alt="Open Source" /></a>
+  <a href="https://www.codefactor.io/repository/github/thefutureproject-org/thefutureproject-api/overview/main"><img src="https://www.codefactor.io/repository/github/thefutureproject-org/thefutureproject-api/badge/main" alt="CodeFactor Badge" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/graphs/commit-activity/"><img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Commit Activity" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API"><img src="https://badges.frapsoft.com/os/v2/open-source.svg?v=103" alt="Open Source" /></a>
   <a href="https://makeapullrequest.com/"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="Pull request" /></a>
-  <a href="https://github.com/thefutureproject-official/thefutureproject-API/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue" alt="License" /></a>
+  <a href="https://github.com/thefutureproject-org/thefutureproject-API/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue" alt="License" /></a>
 
 </p>
 
@@ -28,7 +28,7 @@ Building the foundations of tomorrow with the lightning speed of FastAPI.
 - Clone the repository:
 
 ```bash
-git clone https://github.com/thefutureproject-official/thefutureproject-API.git
+git clone https://github.com/thefutureproject-org/thefutureproject-API.git
 ```
 
 - Navigate to the project directory:
@@ -56,7 +56,7 @@ pip(3) install -r requirements.txt
 nano .env
 ```
 
-The sample is given in [`.env.sample`](https://github.com/thefutureproject-official/thefutureproject-API/blob/main/.env.sample).
+The sample is given in [`.env.sample`](https://github.com/thefutureproject-org/thefutureproject-API/blob/main/.env.sample).
 (You can either edit and rename the file or make a new file named `.env`.)
 
 ---
