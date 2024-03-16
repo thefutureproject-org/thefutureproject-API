@@ -25,7 +25,7 @@ def generate_random_string(length):
     return ''.join(secrets.choice(alphabet) for _ in range(length))
 
 
-def take_webshot_url(url, size, quality, delay, flags, params):
+async def take_webshot_url(url, size, quality, delay, flags, params):
     shot_url = WebShot()
     if size is not None:
         shot_url.size = size
@@ -38,21 +38,28 @@ def take_webshot_url(url, size, quality, delay, flags, params):
     if params is not None:
         shot_url.params = params
     fn = f'{generate_random_string(20)}.png'
-    path = shot_url.create_pic(url=url, output=fn)
+    path = await shot_url.create_pic_async(url=url, output=fn)
     return path
 
 
-def take_webshot_file(text: str):
+async def take_webshot_file(text: str):
     shot_file = WebShot()
     shot_file.quality = 100
     filename = f'{generate_random_string(20)}.png'
-    path = shot_file.create_pic(other=text, output=filename)
+    path = await shot_file.create_pic_async(other=text, output=filename)
     return path
 
 
 @router.post("/url", status_code=status.HTTP_201_CREATED, summary="Take a screenshot of a website")
 async def take_webshot_from_url(url: schemas.Webshot_Url_In):
-    file_path = take_webshot_url(
+    if url.flags is None:
+        url.flags = []
+    if "--enable-javascript" not in url.flags:
+        url.flags.append("--enable-javascript")
+
+    if "--disable-smart-width" not in url.flags:
+        url.flags.append("--disable-smart-width")
+    file_path = await take_webshot_url(
         url.url, url.size, url.quality, url.delay, url.flags, url.params)
     return FileResponse(path=file_path, media_type="image/png", background=BackgroundTask(cleanup, file_path))
 
@@ -65,5 +72,5 @@ async def take_webshot_from_text(file: UploadFile):
             status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file extension")
     contents = await file.read()
     txt = contents.decode()
-    file_path = take_webshot_file(txt)
+    file_path = await take_webshot_file(txt)
     return FileResponse(path=file_path, media_type="image/png", background=BackgroundTask(cleanup, file_path))
