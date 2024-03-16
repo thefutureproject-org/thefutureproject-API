@@ -40,7 +40,7 @@ async def paste_text(txt: schemas.SpaceBin_txt_In):
 
 @router.post("/file", status_code=status.HTTP_201_CREATED, summary="Paste a file")
 async def paste_file(file: UploadFile):
-    file_extension = file.filename.split(".")[1]
+    file_extension = file.filename.split(".")[-1]
     # for ex in VALID_EXTENSIONS:
     #     print(ex)
     if file_extension not in FILE_EXTENSIONS_MAPPING:

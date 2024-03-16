@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from fastapi import UploadFile
 
 
 class Contest_Ranking(BaseModel):
@@ -84,3 +85,12 @@ class Problem_Info_Out(BaseModel):
 class SpaceBin_txt_In(BaseModel):
     txt: str
     extension: Optional[str] = "none"
+
+
+class Webshot_Url_In(BaseModel):
+    url: str
+    size: Optional[tuple[int, int]] = None
+    quality: Optional[int] = 100
+    delay: Optional[float] = None
+    flags: Optional[list[str]] = None
+    params: Optional[dict] = None
