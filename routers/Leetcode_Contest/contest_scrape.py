@@ -1,9 +1,4 @@
-# from make_dict import make_dict
-# import sys
 from routers.Database import models
-# from fastapi import Depends
-# from sqlalchemy.orm import Session
-# from routers.Database.database import get_db
 from .make_dict import make_dict
 import concurrent.futures
 import math
@@ -11,15 +6,9 @@ import requests
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import settings
-# import sys
-# from pathlib import Path
-# sys.path.append(str(Path(__file__).parent.parent.parent))
-
-# import json
 import time
-
-
-# contestants_info = {}
+from sqlalchemy.exc import IntegrityError
+# from sqlalchemy.dialects.postgresql import insert
 
 
 DATABASE_URL = SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.DATABASE_USERNAME}:{settings.DATABASE_PASSWORD}@{settings.DATABASE_HOSTNAME}:{settings.DATABASE_PORT}/{settings.DATABASE_NAME}"
@@ -31,19 +20,36 @@ def scrape_each_page(page_number: int,  contest_name: str, db):
     try:
         response = requests.get(
             f"https://leetcode.com/contest/api/ranking/{contest_name}/?pagination={page_number}&region=global", proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
-        response.raise_for_status()  # Raise an exception for non-200 status codes
-        data = response.json()
-        questions = data["questions"]
-        contestants = data["total_rank"]
-        submissions = data["submissions"]
-        question_ids = [question['question_id'] for question in questions]
-        for contestant, submission in zip(contestants, submissions):
-            result = make_dict(contestant, submission, question_ids)
-            # contestants_info[contestant["username"]] = result
-            contestant_info = models.Contest(**result)
-            db.add(contestant_info)
-            # db.commit()
+        if response.status_code != 200:
+            print(f"Error: {response.status_code}, page: {page_number}")
+            scrape_each_page(page_number, contest_name, db)
+        else:
+            data = response.json()
+            questions = data["questions"]
+            contestants = data["total_rank"]
+            submissions = data["submissions"]
+            question_ids = [question['question_id'] for question in questions]
+            for contestant, submission in zip(contestants, submissions):
+                result = make_dict(contestant, submission, question_ids)
+                contestant_info = models.Contest(**result)
 
+                try:
+                    db.add(contestant_info)
+                    # db.commit()
+                except IntegrityError:
+                    # If there is a conflict (duplicate primary key), update the existing row
+                    db.rollback()  # Rollback the previous transaction
+                    # Merge the new data with the existing row
+                    db.merge(contestant_info)
+                    # db.commit()  # Commit the merged data to the database
+
+                # insert_stmt = insert(
+                #     models.Contest.__table__).values(**result)
+                # do_update_stmt = insert_stmt.on_conflict_do_update(
+                #     index_elements=['username'], set_=result)
+                # db.execute(do_update_stmt)
+
+            print(f"Page {page_number} done")
     except Exception as e:
         print(f"Error occurred: {e}")
 
@@ -57,8 +63,9 @@ def contest_scrape(contest_name: str):
     print(total_pages)
     start_time = time.perf_counter()
     db = SessionLocal()
-    db.query(models.Contest).delete()
-    db.commit()
+    if db.query(models.Contest).count() > 0:
+        db.query(models.Contest).delete()
+        db.commit()
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(
@@ -70,8 +77,5 @@ def contest_scrape(contest_name: str):
     print(
         f"All threads stopped. Finished in {round(finish_time-start_time, 2)} seconds")
 
-    # with open("contestants_info.json", "w") as file:
-    #     json.dump(contestants_info, file, indent=4)
 
-
-# contest_scrape("biweekly-contest-125")
+# contest_scrape("biweekly-contest-126")
