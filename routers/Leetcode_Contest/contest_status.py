@@ -21,16 +21,21 @@ def is_contest_running(start_timestamp):
 
 def contest_status():
     response = requests.get("https://leetcode.com/contest/",
-                            proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER).text
-    soup = BeautifulSoup(response, 'html.parser')
-    # print(soup)
-    json_data = soup.find('script', id='__NEXT_DATA__').string
-    json_data = json.loads(json_data)
-    response = json_data['props']['pageProps']['dehydratedState']['queries'][4]['state']['data']['topTwoContests']
-    # print(response)
-    for contest in response:
-        contest_status = is_contest_running(contest["startTime"])
-        if contest_status == "Contest Running":
-            return {"message": {"title": contest["title"], "titleSlug": contest["titleSlug"], "status": contest_status}}
+                            proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
+    if response.status_code != 200:
+        contest_status()
+        print(f"Error in fetching contest status: {response.status_code}")
+    else:
+        response = response.text
+        soup = BeautifulSoup(response, 'html.parser')
+        # print(soup)
+        json_data = soup.find('script', id='__NEXT_DATA__').string
+        json_data = json.loads(json_data)
+        response = json_data['props']['pageProps']['dehydratedState']['queries'][4]['state']['data']['topTwoContests']
+        # print(response)
+        for contest in response:
+            contest_status = is_contest_running(contest["startTime"])
+            if contest_status == "Contest Running":
+                return {"message": {"title": contest["title"], "titleSlug": contest["titleSlug"], "status": contest_status}}
 
-    return {"message": "No contest running at the moment."}
+        return {"message": "No contest running at the moment."}
