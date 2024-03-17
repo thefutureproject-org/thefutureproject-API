@@ -94,3 +94,7 @@ class Webshot_Url_In(BaseModel):
     delay: Optional[float] = None
     flags: Optional[list[str]] = None
     params: Optional[dict] = None
+
+
+class Leetcode_Username_In(BaseModel):
+    username: str
