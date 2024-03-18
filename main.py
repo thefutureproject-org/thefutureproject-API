@@ -29,6 +29,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title="The Future Project",
               description="Building the foundations of tomorrow with the lightning speed of FastAPI.", version="0.0.1",
+              contact={
+                  "name": "The Future Project",
+                  "url": "https://thefutureproject.tech/",
+                  "email": "sailikpandey@thefutureproject.tech",
+              },
+              license_info={
+                  "name": "GNU Affero General Public License v3.0",
+                  "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
+              },
               redoc_url=None, docs_url=None)
 
 origins = ["*"]
