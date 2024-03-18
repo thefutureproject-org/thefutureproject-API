@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from .Database import models
 from typing import List
+from sqlalchemy import func
 
 
 router = APIRouter(
@@ -25,7 +26,10 @@ async def get_contest_status():
 @router.post("/contest/ranking", response_model=List[schemas.Contest_Ranking_Out])
 async def get_contest_ranking(usernames: schemas.Contest_Ranking, db: Session = Depends(get_db)):
     contests = db.query(models.Contest).filter(
-        models.Contest.username.in_(usernames.contestants_ids)).all()
+        func.lower(models.Contest.username).in_(
+            [username.lower() for username in usernames.contestants_ids]
+        )
+    ).all()
     return contests
 
 
