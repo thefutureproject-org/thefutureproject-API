@@ -7,8 +7,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import settings
 import time
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.dialects.postgresql import insert
+import threading
+
+unique_usernames = set()
+lock = threading.Lock()
 
 
 DATABASE_URL = SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.DATABASE_USERNAME}:{settings.DATABASE_PASSWORD}@{settings.DATABASE_HOSTNAME}:{settings.DATABASE_PORT}/{settings.DATABASE_NAME}"
@@ -30,31 +32,14 @@ def scrape_each_page(page_number: int,  contest_name: str, db):
             submissions = data["submissions"]
             question_ids = [question['question_id'] for question in questions]
 
-            # entries = []
-
             for contestant, submission in zip(contestants, submissions):
                 result = make_dict(contestant, submission, question_ids)
                 contestant_info = models.Contest(**result)
-                # entries.append(contestant_info)
 
-                # try:
-                #     # if len(entries) >= 50:  # Example batch size
-                #     db.add(contestant_info)
-                #     db.commit()
-                #     # entries.clear()
-                # except IntegrityError:
-                #     db.rollback()
-                #     db.merge(contestant_info)
-                #     db.commit()
-                insert_stmt = insert(
-                    models.Contest.__table__).values(**result)
-                do_update_stmt = insert_stmt.on_conflict_do_update(
-                    index_elements=['username'], set_=result)
-                db.execute(do_update_stmt)
-
-            # if entries:
-            #     db.add_all(entries)
-            #     db.commit()
+                with lock:
+                    if contestant_info.username not in unique_usernames:
+                        unique_usernames.add(contestant_info.username)
+                        db.add(contestant_info)
 
             print(f"Page {page_number} done")
     except Exception as e:
@@ -105,4 +90,4 @@ def contest_scrape(contest_name: str):
             f"All threads stopped. Finished in {round(finish_time-start_time, 2)} seconds")
 
 
-# contest_scrape("biweekly-contest-126")
+contest_scrape("weekly-contest-389")
