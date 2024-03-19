@@ -98,3 +98,7 @@ class Webshot_Url_In(BaseModel):
 
 class Leetcode_Username_In(BaseModel):
     username: str
+
+
+class GFG_Problem_In(BaseModel):
+    title_slug: str
