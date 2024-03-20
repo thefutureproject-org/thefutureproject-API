@@ -106,3 +106,7 @@ class GFG_Problem_In(BaseModel):
 
 class morse_code_In(BaseModel):
     text: str
+
+
+class GFG_Profile_In(BaseModel):
+    username: str

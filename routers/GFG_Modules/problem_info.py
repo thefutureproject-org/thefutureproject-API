@@ -14,7 +14,7 @@ def get_problem_data(title_slug: str):
             status_code=status.HTTP_404_NOT_FOUND, detail="Problem not found")
 
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text, 'lxml')
         try:
             json_data = soup.find('script', id='__NEXT_DATA__').string
             json_data = json.loads(json_data)
