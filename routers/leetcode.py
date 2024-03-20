@@ -25,7 +25,7 @@ async def get_contest_status():
 
 
 @router.post("/contest/ranking", response_model=List[schemas.Contest_Ranking_Out])
-async def get_contest_ranking(usernames: schemas.Contest_Ranking, origin: str = Header(None), db: Session = Depends(get_db)):
+async def get_contest_ranking(usernames: schemas.Contest_Ranking, origin: str = Header(None, include_in_schema=False), db: Session = Depends(get_db)):
     if (origin == "chrome-extension://mcfpimbkecfbccgdamgejenmljjcamce"):
         contests = db.query(models.Contest).filter(
             func.lower(models.Contest.username).in_(
