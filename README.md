@@ -1,6 +1,6 @@
 <p align="center">
   <a>
-    <img src="https://raw.githubusercontent.com/sailikpandey22/fastapi/main/LOGO.png" width="500px" alt="The Future Project Logo logo"/>
+    <img src="https://raw.githubusercontent.com/thefutureproject-official/Logo/main/logo.png" width="500px" alt="The Future Project Logo logo"/>
   </a>
 
 </p>

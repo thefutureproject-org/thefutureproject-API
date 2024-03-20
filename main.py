@@ -6,10 +6,11 @@ from routers.Leetcode_Contest import contest_schedule
 import json
 import fcntl
 from fastapi.openapi.docs import (
-    get_redoc_html,
     get_swagger_ui_html,
     get_swagger_ui_oauth2_redirect_html,
 )
+from fastapi.openapi.utils import get_openapi
+from fastapi.responses import HTMLResponse
 
 
 @asynccontextmanager
@@ -28,7 +29,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan, title="The Future Project",
-              description="Building the foundations of tomorrow with the lightning speed of FastAPI.", version="0.0.1",
+              description="Building the foundations of tomorrow with the lightning speed of FastAPI.", version="1.0.0",
               contact={
                   "name": "The Future Project",
                   "url": "https://thefutureproject.tech/",
@@ -51,12 +52,12 @@ app.add_middleware(
 )
 
 app.include_router(leetcode.router)
+app.include_router(gfg.router)
 app.include_router(stock_data.router)
 app.include_router(ocr.router)
 app.include_router(ipinfo.router)
 app.include_router(spacebin.router)
 app.include_router(webshot.router)
-app.include_router(gfg.router)
 app.include_router(morse_code.router)
 
 
@@ -73,6 +74,7 @@ async def custom_swagger_ui_html():
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js",
         swagger_css_url="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css",
+
     )
 
 
@@ -81,10 +83,74 @@ async def swagger_ui_redirect():
     return get_swagger_ui_oauth2_redirect_html()
 
 
-@app.get("/redoc", include_in_schema=False)
-async def redoc_html():
-    return get_redoc_html(
-        openapi_url=app.openapi_url,
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
         title=app.title,
-        redoc_js_url="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"
+        version=app.version,
+        description=app.description,
+        contact=app.contact,
+        license_info=app.license_info,
+        routes=app.routes,
+
     )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://raw.githubusercontent.com/thefutureproject-official/Logo/main/logo.png"
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
+
+def get_custom_redoc_html(
+    *,
+    openapi_url: str,
+    title: str,
+    redoc_js_url: str = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js",
+    redoc_favicon_url: str = "https://raw.githubusercontent.com/thefutureproject-official/Logo/main/favicon.ico",
+    with_google_fonts: bool = True
+) -> HTMLResponse:
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>{title}</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    """
+    if with_google_fonts:
+        html += """
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+    """
+    html += f"""
+    <link rel="shortcut icon" href="{redoc_favicon_url}">
+    <!--
+    ReDoc doesn't change outer page styles
+    -->
+    <style>
+      body {{
+        margin: 0;
+        padding: 0;
+      }}
+    </style>
+    </head>
+    <body>
+    <noscript>
+        ReDoc requires Javascript to function. Please enable it to browse the documentation.
+    </noscript>
+    <redoc spec-url="{openapi_url}" hide-download-button>
+    </redoc>
+    <script src="{redoc_js_url}"> </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(html)
+
+
+@app.get("/redoc", include_in_schema=False)
+async def redoc_try_it_out() -> HTMLResponse:
+    return get_custom_redoc_html(openapi_url=app.openapi_url, title=app.title)
