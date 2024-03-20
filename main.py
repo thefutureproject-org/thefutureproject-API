@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import leetcode, stock_data, ocr, ipinfo, spacebin, webshot, gfg
+from routers import leetcode, stock_data, ocr, ipinfo, spacebin, webshot, gfg, morse_code
 from contextlib import asynccontextmanager
 from routers.Leetcode_Contest import contest_schedule
 import json
@@ -32,7 +32,7 @@ app = FastAPI(lifespan=lifespan, title="The Future Project",
               contact={
                   "name": "The Future Project",
                   "url": "https://thefutureproject.tech/",
-                  "email": "sailikpandey@thefutureproject.tech",
+                  "email": "support@thefutureproject.tech",
               },
               license_info={
                   "name": "GNU Affero General Public License v3.0",
@@ -57,6 +57,7 @@ app.include_router(ipinfo.router)
 app.include_router(spacebin.router)
 app.include_router(webshot.router)
 app.include_router(gfg.router)
+app.include_router(morse_code.router)
 
 
 @app.get("/")

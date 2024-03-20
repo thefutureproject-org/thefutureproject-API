@@ -102,3 +102,7 @@ class Leetcode_Username_In(BaseModel):
 
 class GFG_Problem_In(BaseModel):
     title_slug: str
+
+
+class morse_code_In(BaseModel):
+    text: str
