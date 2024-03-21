@@ -26,40 +26,42 @@ def get_ip_info(ip: str):
     ip_score = ip_score_div.text.split(":")[1].strip()
     risk = soup.find("div", {"class": "panel_title high_risk"}).text.split(" ")[
         0].strip()
-    asn = soup.find('th', string='ASN').find_next_sibling('td').text.strip()
-    city = soup.find('th', string='City').find_next_sibling('td').text.strip()
-    country = soup.find('th', string='Country Name').find_next_sibling(
-        'td').text.strip()
-    country_code = soup.find(
-        'th', string='Country Code').find_next_sibling('td').text.strip()
+
     hostname = soup.find('th', string='Hostname').find_next_sibling(
         'td').text.strip()
+    asn = soup.find('th', string='ASN').find_next_sibling('td').text.strip()
     isp_name = soup.find('th', string='ISP Name').find_next_sibling(
         'td').text.strip()
-    latitude = soup.find('th', string='Latitude').find_next_sibling(
-        'td').text.strip()
-    longitude = soup.find(
-        'th', string='Longitude').find_next_sibling('td').text.strip()
     organisation_name = soup.find(
         'th', string='Organization Name').find_next_sibling('td').text.strip()
     connection_type = soup.find(
         'th', string='Connection type').find_next_sibling('td').text.strip()
-    region = soup.find('th', string='Region').find_next_sibling(
+
+    country = soup.find('th', string='Country Name').find_next_sibling(
         'td').text.strip()
-    metro_code = soup.find(
-        'th', string='Metro Code').find_next_sibling('td').text.strip()
-    area_code = soup.find(
-        'th', string='Area Code').find_next_sibling('td').text.strip()
+    country_code = soup.find(
+        'th', string='Country Code').find_next_sibling('td').text.strip()
+    state = soup.find('th', string='State / Province').find_next_sibling(
+        'td').text.strip()
+    district = soup.find(
+        'th', string='District / County').find_next_sibling('td').text.strip()
+    city = soup.find(
+        'th', string='City').find_next_sibling('td').text.strip()
     postal_code = soup.find(
         'th', string='Postal Code').find_next_sibling('td').text.strip()
-    web_proxy = soup.find(
-        'th', string='Web Proxy').find_next_sibling('td').text.strip()
-    server = soup.find(
-        'th', string='Server').find_next_sibling('td').text.strip()
+    latitude = soup.find('th', string='Latitude').find_next_sibling(
+        'td').text.strip()
+    longitude = soup.find(
+        'th', string='Longitude').find_next_sibling('td').text.strip()
+
     tor_exit_node = soup.find(
         'th', string='Tor Exit Node').find_next_sibling('td').text.strip()
+    server = soup.find(
+        'th', string='Server').find_next_sibling('td').text.strip()
     public_proxy = soup.find(
         'th', string='Public Proxy').find_next_sibling('td').text.strip()
+    web_proxy = soup.find(
+        'th', string='Web Proxy').find_next_sibling('td').text.strip()
     search_engine_robot = soup.find(
         'th', string='Search Engine Robot').find_next_sibling('td').text.strip()
 
@@ -79,11 +81,10 @@ def get_ip_info(ip: str):
         "Location": {
             "Country Name": country,
             "Country Code": country_code,
-            "Region": region,
+            "State / Province": state,
+            "District / County": district,
             "City": city,
             "Postal Code": postal_code,
-            "Metro Code": metro_code,
-            "Area Code": area_code,
             "Latitude": latitude,
             "Longitude": longitude
         },
