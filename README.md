@@ -1,6 +1,6 @@
 <p align="center">
   <a>
-    <img src="static/logo.png" width="700px" alt="The Future Project Logo logo"/>
+    <img src="static/logo.png" width="850px" alt="The Future Project Logo logo"/>
   </a>
 
 </p>
