@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import leetcode, stock_data, ocr, ipinfo, spacebin, webshot, gfg, morse_code
+from routers import leetcode, stock_data, ocr, ipinfo, spacebin, webshot, gfg, morse_code, carbon_code
 from contextlib import asynccontextmanager
 from routers.Leetcode_Contest import contest_schedule
 import json
@@ -63,6 +63,7 @@ app.include_router(ipinfo.router)
 app.include_router(spacebin.router)
 app.include_router(webshot.router)
 app.include_router(morse_code.router)
+app.include_router(carbon_code.router)
 
 
 @app.get("/")
