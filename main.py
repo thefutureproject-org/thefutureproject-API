@@ -11,6 +11,7 @@ from fastapi.openapi.docs import (
 )
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 
 @asynccontextmanager
@@ -40,6 +41,9 @@ app = FastAPI(lifespan=lifespan, title="The Future Project",
                   "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
               },
               redoc_url=None, docs_url=None)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 origins = ["*"]
 
@@ -72,8 +76,9 @@ async def custom_swagger_ui_html():
         openapi_url=app.openapi_url,
         title=app.title,
         oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
-        swagger_js_url="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js",
-        swagger_css_url="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css",
+        swagger_js_url="/static/swagger-ui-bundle.js",
+        swagger_css_url="/static/swagger-ui.css",
+        swagger_favicon_url="/static/favicon.ico"
 
     )
 
@@ -96,7 +101,7 @@ def custom_openapi():
 
     )
     openapi_schema["info"]["x-logo"] = {
-        "url": "https://raw.githubusercontent.com/thefutureproject-official/Logo/main/logo.png"
+        "url": "/static/logo.png"
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
@@ -109,8 +114,8 @@ def get_custom_redoc_html(
     *,
     openapi_url: str,
     title: str,
-    redoc_js_url: str = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js",
-    redoc_favicon_url: str = "https://raw.githubusercontent.com/thefutureproject-official/Logo/main/favicon.ico",
+    redoc_js_url: str = "/static/redoc.standalone.js",
+    redoc_favicon_url: str = "/static/favicon.ico",
     with_google_fonts: bool = True
 ) -> HTMLResponse:
     html = f"""
