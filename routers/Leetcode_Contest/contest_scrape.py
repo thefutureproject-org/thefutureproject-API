@@ -65,7 +65,7 @@ def contest_scrape(contest_name: str):
             # Perform your database operation here
             if db.query(models.Contest).count() > 0:
                 db.query(models.Contest).delete()
-                db.commit()
+                # db.commit()
         except Exception as e:
             # If an exception occurs, rollback the session
             db.rollback()
@@ -84,6 +84,7 @@ def contest_scrape(contest_name: str):
                 db.rollback()  # Rollback the entire transaction if any thread fails
 
         db.commit()
+        db.close()
 
         finish_time = time.perf_counter()
         print(

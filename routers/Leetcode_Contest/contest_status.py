@@ -34,8 +34,8 @@ def contest_status():
         response = json_data['props']['pageProps']['dehydratedState']['queries'][4]['state']['data']['topTwoContests']
         # print(response)
         for contest in response:
-            contest_status = is_contest_running(contest["startTime"])
-            if contest_status == "Contest Running":
+            status = is_contest_running(contest["startTime"])
+            if status == "Contest Running":
                 return {"message": {"title": contest["title"], "titleSlug": contest["titleSlug"], "status": contest_status}}
 
         return {"message": "No contest running at the moment."}
