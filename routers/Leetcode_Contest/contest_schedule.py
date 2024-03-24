@@ -20,6 +20,8 @@ def leetcode_contest_schedule():
         contest_name = contest["message"]["titleSlug"]
         print(f"Scraping {contest_name}...")
         contest_scrape(contest_name)
+    else:
+        print("No contest running at the moment.")
 
 
 # Utility function to check if it's the correct biweekly Saturday
