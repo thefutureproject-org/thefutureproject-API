@@ -68,7 +68,7 @@ app.include_router(carbon_code.router)
 
 @app.get("/")
 async def main():
-    return {"message": "Welcome to The Future Project"}
+    return {"message": "Welcome to The Future Project. Enjoy our services."}
 
 
 @app.get("/docs", include_in_schema=False)

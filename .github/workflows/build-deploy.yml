@@ -1,0 +1,23 @@
+name: Build and Deploy Code
+
+on: [push, pull_request]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd app
+            source venv/bin/activate
+            cd src
+            git pull origin main
+            git reset --hard origin/main
+            pip3 install -r requirements.txt
+            echo ${{ secrets.PASSWORD }} | sudo -S systemctl restart api.service
