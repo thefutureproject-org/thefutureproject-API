@@ -14,14 +14,16 @@ import schedule
 
 def leetcode_contest_schedule():
     contest = contest_status()
-    print("contest scraping running")
-    # contest_scrape("weekly-contest-388")
-    if contest["message"] != "No contest running at the moment.":
-        contest_name = contest["message"]["titleSlug"]
-        print(f"Scraping {contest_name}...")
-        contest_scrape(contest_name)
+    if contest is None:
+        leetcode_contest_schedule()
     else:
-        print("No contest running at the moment.")
+        # contest_scrape("weekly-contest-388")
+        if contest["message"] != "No contest running at the moment.":
+            contest_name = contest["message"]["titleSlug"]
+            print(f"Scraping {contest_name}...")
+            contest_scrape(contest_name)
+        else:
+            print("No contest running at the moment.")
 
 
 # Utility function to check if it's the correct biweekly Saturday
@@ -75,8 +77,8 @@ def weekly_every_5_minutes():
     while True:
         schedule_weekly_contest()
         i += 1
-        time.sleep(300)
-        if (i == 19):
+        time.sleep(30)
+        if (i == 20):
             return
 
 
@@ -86,8 +88,8 @@ def biweekly_every_5_minutes():
         while True:
             schedule_biweekly_contest()
             i += 1
-            time.sleep(300)
-            if (i == 19):
+            time.sleep(30)
+            if (i == 20):
                 return
 
 
