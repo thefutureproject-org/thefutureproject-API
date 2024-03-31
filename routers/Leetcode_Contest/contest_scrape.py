@@ -92,4 +92,4 @@ def contest_scrape(contest_name: str):
             f"All threads stopped. Finished in {round(finish_time-start_time, 2)} seconds")
 
 
-contest_scrape("weekly-contest-391")
+# contest_scrape("weekly-contest-391")
