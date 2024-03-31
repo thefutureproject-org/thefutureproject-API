@@ -84,6 +84,7 @@ def contest_scrape(contest_name: str):
                 db.rollback()  # Rollback the entire transaction if any thread fails
 
         db.commit()
+        print(len(unique_usernames))
         db.close()
 
         finish_time = time.perf_counter()
@@ -91,4 +92,4 @@ def contest_scrape(contest_name: str):
             f"All threads stopped. Finished in {round(finish_time-start_time, 2)} seconds")
 
 
-# contest_scrape("weekly-contest-390")
+contest_scrape("weekly-contest-391")

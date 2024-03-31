@@ -77,7 +77,7 @@ def weekly_every_5_minutes():
     while True:
         schedule_weekly_contest()
         i += 1
-        time.sleep(30)
+        time.sleep(90)
         if (i == 20):
             return
 
@@ -88,7 +88,7 @@ def biweekly_every_5_minutes():
         while True:
             schedule_biweekly_contest()
             i += 1
-            time.sleep(30)
+            time.sleep(90)
             if (i == 20):
                 return
 
