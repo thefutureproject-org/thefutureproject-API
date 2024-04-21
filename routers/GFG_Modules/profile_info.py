@@ -7,7 +7,6 @@ from config import settings
 def get_user_data(username: str):
     response = requests.get(
         url=f"https://auth.geeksforgeeks.org/user/{username}/", proxies=settings.PROXIES)
-
     if response.status_code != 200:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -16,40 +15,66 @@ def get_user_data(username: str):
         try:
             data = {"username": username}
             soup = BeautifulSoup(response.text, 'lxml')
-            rank = soup.find('span', class_='rankNum')
+            # -------------------Extracting Rank-------------------#
+            rank = soup.find(
+                'span', class_='profilePicSection_head_userRankContainer_rank__abngM')
             if rank:
                 rank = rank.get_text()
                 data['rank'] = rank
-            details = soup.find('div', class_='row basic_details')
-            for detail in details:
-                if detail == "\n":
-                    continue
-                detail_name = detail.find(
-                    'div', class_='basic_details_name').text.strip()
 
-                detail_data = detail.find(
-                    'div', class_='basic_details_data').text.strip()
-                data[detail_name] = detail_data
+            # -------------------Extracting Streak-------------------#
 
-            score_cards = soup.find_all('div', class_='score_card_left')
-            for card in score_cards:
-                score_name = card.find(
-                    'span', class_='score_card_name').get_text(strip=True)
-                score_value = card.find(
-                    'span', class_='score_card_value').get_text(strip=True)
-                data[score_name] = score_value
-
-            solved_problems = soup.find(
-                'ul', class_='tabs tabs-fixed-width linksTypeProblem').find_all('li', class_='tab')
-            for tab_element in solved_problems:
-                category_text = tab_element.text.strip()
-                category, count = category_text.split(' (')
-                count = int(count[:-1])
-                data[category] = count
             streak = soup.find(
-                'div', class_='streakCnt tooltipped').text.strip().split()[0]
+                'div', class_='circularProgressBar_head_mid_streakCnt__MFOF1 tooltipped').text.strip().split('/')[0]
             data['streak'] = streak
 
+            # -------------------Extracting Institution-------------------#
+
+            Institution = soup.find(
+                'div', class_='educationDetails_head_left--text__tgi9I')
+            if Institution:
+                Institution = Institution.text.strip()
+                data['Institution'] = Institution
+
+            # -------------------Extracting Languages-------------------#
+
+            Languages = soup.find(
+                'div', class_='educationDetails_head_right--text__lLOHI')
+            if Languages:
+                Languages = Languages.text.strip()
+                data['Languages'] = Languages
+
+            # -------------------Extracting Score Cards-------------------#
+
+            score_card_divs = soup.find_all(
+                'div', class_='scoreCard_head__nxXR8')
+            if score_card_divs:
+                for div in score_card_divs:
+                    text_div = div.find(
+                        'div', class_='scoreCard_head_card_left--text__hs9G4')
+                    score_div = div.find(
+                        'div', class_='scoreCard_head_card_left--score__pC6ZA')
+
+                    if text_div and score_div:
+                        text = text_div.text.strip()
+                        score = score_div.text.strip()
+                        data[text] = score
+
+            # -------------------Extracting Solved Problems-------------------#
+
+            difficulty_divs = soup.find_all(
+                'div', class_='problemNavbar_head_nav__a4K6P')
+
+            if difficulty_divs:
+                for div in difficulty_divs:
+                    text = div.find(
+                        'div', class_='problemNavbar_head_nav--text__UaGCx').get_text()
+                    difficulty, _, tags = text.partition('(')
+                    difficulty = difficulty.strip()
+                    tags = tags.split(')')[0].strip()
+                    data[difficulty] = tags
+
+            # ---------------------------------------------------------------#
             return data
 
         except AttributeError as e:
