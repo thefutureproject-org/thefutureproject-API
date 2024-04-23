@@ -11,7 +11,7 @@ def get_profile_info(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {response.status_code} get_profile_info")
         get_profile_info(username)
     else:
         if "errors" not in response.json():
@@ -49,7 +49,8 @@ def get_problem_solved_language_count(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(
+            f"Error: {response.status_code} get_problem_solved_language_count")
         get_problem_solved_language_count(username)
     else:
         if "errors" not in response.json():
@@ -63,7 +64,8 @@ def get_tag_problem_count(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(
+            f"Error: {response.status_code} get_problem_solved_language_count")
         get_tag_problem_count(username)
     else:
         if "errors" not in response.json():
@@ -78,7 +80,7 @@ def get_user_contest_ranking(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {response.status_code} get_user_contest_ranking")
         get_user_contest_ranking(username)
     else:
         if "errors" not in response.json():
@@ -94,7 +96,7 @@ def get_total_problems_solved(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {response.status_code} get_total_problems_solved")
         get_total_problems_solved(username)
     else:
         if "errors" not in response.json():
@@ -109,7 +111,7 @@ def get_submmission_calender(username: str, data: dict):
     response = requests.post(url=url, json=payload,
                              proxies=settings.PROXIES, headers=settings.LEETCODE_HEADER)
     if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {response.status_code} get_submmission_calender")
         get_submmission_calender(username)
     else:
         if "errors" not in response.json():

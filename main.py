@@ -58,6 +58,7 @@ app.add_middleware(
 
 app.include_router(leetcode.router)
 app.include_router(gfg.router)
+app.include_router(codeforces.router)
 app.include_router(stock_data.router)
 app.include_router(ocr.router)
 app.include_router(ipinfo.router)
@@ -66,7 +67,6 @@ app.include_router(webshot.router)
 app.include_router(morse_code.router)
 app.include_router(carbon_code.router)
 app.include_router(removebg.router)
-app.include_router(codeforces.router)
 
 
 @app.get("/")
