@@ -110,3 +110,7 @@ class morse_code_In(BaseModel):
 
 class GFG_Profile_In(BaseModel):
     username: str
+
+
+class Codeforces_profile_In(BaseModel):
+    username: str
