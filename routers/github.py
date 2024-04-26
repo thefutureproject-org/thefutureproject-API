@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 import requests
 import schemas
 from config import settings
@@ -11,11 +11,17 @@ router = APIRouter(
 
 def is_valid_github_repo(url):
     if not url.startswith("https://github.com/"):
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Could not find REPO"
+        )
 
     parts = url.split("/")
     if len(parts) != 5:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Could not find REPO"
+        )
 
     username = parts[3]
     repo_name = parts[4]
@@ -26,7 +32,10 @@ def is_valid_github_repo(url):
     if response.status_code == requests.codes.ok:
         return response.json()
     else:
-        return "Repo Not Found"
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Could not find REPO"
+        )
 
 
 @router.post("/repo", status_code=200, summary="Get repository details from GitHub")
