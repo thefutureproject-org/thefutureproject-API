@@ -3,11 +3,11 @@ Description=The Future Project
 After=network.target
 
 [Service]
-User=david
-Group=david
-WorkingDirectory=/home/david/app/src
-Environment="PATH=/home/david/app/venv/bin"
-ExecStart=/home/david/app/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/thefutureproject-API
+Environment="PATH=/home/ubuntu/thefutureproject-API/venv/bin"
+ExecStart=/home/ubuntu/thefutureproject-API/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
 
 [Install]
 WantedBy=multi-user.target

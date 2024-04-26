@@ -11,12 +11,10 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
           script: |
-            cd app
+            cd thefutureproject-API/
             source venv/bin/activate
-            cd src
             git pull origin main
             git reset --hard origin/main
             pip3 install -r requirements.txt
