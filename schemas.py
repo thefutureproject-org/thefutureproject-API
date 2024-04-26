@@ -114,3 +114,7 @@ class GFG_Profile_In(BaseModel):
 
 class Codeforces_profile_In(BaseModel):
     username: str
+
+
+class GitHub_Repo_In(BaseModel):
+    url: str
