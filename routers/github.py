@@ -40,4 +40,5 @@ def is_valid_github_repo(url):
 
 @router.post("/repo", status_code=200, summary="Get repository details from GitHub")
 async def get_repo_info(repo: schemas.GitHub_Repo_In):
-    return is_valid_github_repo(repo.url)
+    data = is_valid_github_repo(repo.url)
+    result = {}
