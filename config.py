@@ -11,6 +11,7 @@ class settings(BaseSettings):
     LEETCODE_HEADER: dict
     OCR_API_KEY: str
     USER_AGENT: str
+    PROXY_URL: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

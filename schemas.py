@@ -118,3 +118,8 @@ class Codeforces_profile_In(BaseModel):
 
 class GitHub_Repo_In(BaseModel):
     url: str
+
+
+class Contest_Analysis_In(BaseModel):
+    contest_name: str
+    username: str
