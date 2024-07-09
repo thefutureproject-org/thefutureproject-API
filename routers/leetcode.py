@@ -73,7 +73,7 @@ async def get_profile_info(username: schemas.Leetcode_Username_In):
 
 @router.post("/contest/analysis")
 async def get_contest_analysis(contest: schemas.Contest_Analysis_In):
-    return await get_all_submissions(contest.contest_name, contest.username)
+    return await get_all_submissions(contest.contest_name)
 
 
 @router.get("/get-prediction")

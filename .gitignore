@@ -3,3 +3,4 @@ __pycache__
 myvenv
 output.log
 .env
+.vercel

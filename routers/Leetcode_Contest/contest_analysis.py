@@ -196,7 +196,7 @@ def get_questions(all_submissions):
     return questions
 
 
-async def get_all_submissions(weekly_contest: str = 'weekly-contest-403', username: str = 'NayakPenguin'):
+async def get_all_submissions(weekly_contest: str = 'weekly-contest-404'):
     all_submissions = await get_data_for_pages(weekly_contest)
     # print(all_submissions)
     questions = get_questions(all_submissions)

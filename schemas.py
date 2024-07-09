@@ -122,4 +122,3 @@ class GitHub_Repo_In(BaseModel):
 
 class Contest_Analysis_In(BaseModel):
     contest_name: str
-    username: str
