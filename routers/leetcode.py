@@ -58,9 +58,20 @@ async def get_contest_ranking(usernames: schemas.Contest_Ranking, origin: str = 
         return user_data
 
 
-@router.post("/contest/info", response_model=schemas.Contest_Info_Out)
+@router.post("/contest/info/hidden", response_model=schemas.Contest_Info_Out, summary="Contest Info Hidden API")
 async def get_contest_info(contest_name: schemas.Contest_Info_In):
     return contest_info(contest_name.contest_name)
+
+
+@router.get("/contest/info/{contest_name}")
+async def get_contest_info(contest_name: str, client: AsyncIOMotorClient = Depends(get_mdb)):
+    db = client.Contest
+    collection = db.Contest_info
+    contest_data = await collection.find_one({contest_name: {"$exists": True}})
+    if contest_data:
+        return contest_data[contest_name]
+    else:
+        raise HTTPException(status_code=404, detail="Contest not found")
 
 
 @router.post("/problem/info", response_model=schemas.Problem_Info_Out)
@@ -73,7 +84,7 @@ async def get_profile_info(username: schemas.Leetcode_Username_In):
     return user_info(username.username)
 
 
-@router.post("/contest/analysis/hidden")
+@router.post("/contest/analysis/hidden", summary="Contest Analysis Hidden API")
 async def get_contest_analysis(contest: schemas.Contest_Analysis_In):
     return await get_all_submissions(contest.contest_name)
 
