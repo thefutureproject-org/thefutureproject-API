@@ -122,3 +122,8 @@ class GitHub_Repo_In(BaseModel):
 
 class Contest_Analysis_In(BaseModel):
     contest_name: str
+
+
+class ContestData(BaseModel):
+    contest_name: str
+    data: dict

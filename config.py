@@ -12,6 +12,7 @@ class settings(BaseSettings):
     OCR_API_KEY: str
     USER_AGENT: str
     PROXY_URL: str
+    MONGO_URI: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

@@ -6,6 +6,8 @@ from .Leetcode_Contest.profile_scrape import user_info
 from .Leetcode_Contest.contest_analysis import get_all_submissions
 import schemas
 from .Database.database import get_db
+from .Database.mongodb import get_mdb
+from motor.motor_asyncio import AsyncIOMotorClient
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from .Database import models
@@ -71,14 +73,33 @@ async def get_profile_info(username: schemas.Leetcode_Username_In):
     return user_info(username.username)
 
 
-@router.post("/contest/analysis")
+@router.post("/contest/analysis/hidden")
 async def get_contest_analysis(contest: schemas.Contest_Analysis_In):
     return await get_all_submissions(contest.contest_name)
 
 
+@router.get("/contest/analysis/{contest_name}", response_model=schemas.ContestData)
+async def get_contest_data(contest_name: str, client: AsyncIOMotorClient = Depends(get_mdb)):
+    db = client.Contest
+
+    if contest_name.startswith("weekly"):
+        collection = db.Weekly
+        contest_data = await collection.find_one({contest_name: {"$exists": True}})
+        if contest_data:
+            return {"contest_name": contest_name, "data": contest_data[contest_name]}
+    elif contest_name.startswith("biweekly"):
+        collection = db.Biweekly
+        contest_data = await collection.find_one({contest_name: {"$exists": True}})
+        if contest_data:
+            return {"contest_name": contest_name, "data": contest_data[contest_name]}
+
+    raise HTTPException(status_code=404, detail="Contest not found")
+
+
 @router.get("/get-prediction")
 async def get_prediction(weekly_contest: str = "weekly-contest-404", username: str = "Chandrachur"):
-    api_url = f'https://lccn.lbao.site/api/v1/contest-records/user?contest_name={weekly_contest}&username={username}&archived=false'
+    api_url = f'https://lccn.lbao.site/api/v1/contest-records/user?contest_name={
+        weekly_contest}&username={username}&archived=false'
 
     async with httpx.AsyncClient(proxy=settings.PROXY_URL) as client:
         response = await client.get(api_url)

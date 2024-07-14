@@ -14,6 +14,7 @@ from fastapi.openapi.docs import (
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from routers.Database.mongodb import db_client
 
 
 @asynccontextmanager
@@ -31,6 +32,13 @@ async def lifespan(app: FastAPI):
             contest_schedule.setup_scheduling()
     yield
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await db_client.connect()
+    yield
+    await db_client.close()
+
 app = FastAPI(lifespan=lifespan, title="The Future Project",
               description="Building the foundations of tomorrow with the lightning speed of FastAPI.", version="1.0.0",
               contact={
@@ -43,6 +51,7 @@ app = FastAPI(lifespan=lifespan, title="The Future Project",
                   "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
               },
               redoc_url=None, docs_url=None)
+
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
