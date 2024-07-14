@@ -56,6 +56,7 @@ Mako==1.3.2
 MarkupSafe==2.1.5
 mistune==3.0.2
 morsedecode==1.0.0
+motor==3.5.1
 mpmath==1.3.0
 multidict==6.0.5
 multitasking==0.0.11
@@ -90,6 +91,7 @@ pydantic-settings==2.2.1
 pydantic_core==2.16.3
 Pygments==2.17.2
 PyMatting==1.1.12
+pymongo==4.8.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-multipart==0.0.9
