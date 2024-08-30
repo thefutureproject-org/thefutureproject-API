@@ -74,6 +74,15 @@ async def get_contest_info(contest_name: str, client: AsyncIOMotorClient = Depen
         raise HTTPException(status_code=404, detail="Contest not found")
 
 
+@router.get("/contest/last_hundred/info", response_model=List[schemas.Contest_Info_Out])
+async def get_last_hundred_contests(client: AsyncIOMotorClient = Depends(get_mdb)):
+    db = client.Contest
+    collection = db.Last_100
+    contests = await collection.find().to_list(None)  # None means no limit
+    contests.reverse()
+    return contests
+
+
 @router.post("/problem/info", response_model=schemas.Problem_Info_Out)
 async def problem_info(problem: schemas.Problem_Info_In):
     return get_problem_info(problem.title_slug)
