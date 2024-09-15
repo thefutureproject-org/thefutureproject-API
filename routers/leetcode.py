@@ -120,7 +120,7 @@ async def get_contest_data(contest_name: str, client: AsyncIOMotorClient = Depen
 async def get_prediction(weekly_contest: str = "weekly-contest-404", username: str = "Chandrachur"):
     api_url = f"https://lccn.lbao.site/api/v1/contest-records/user?contest_name={weekly_contest}&username={username}&archived=false"
 
-    async with httpx.AsyncClient(proxy=settings.PROXY_URL) as client:
+    async with httpx.AsyncClient() as client:
         response = await client.get(api_url)
 
     if response.status_code == 200:
