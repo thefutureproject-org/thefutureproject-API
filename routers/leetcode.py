@@ -125,7 +125,9 @@ async def get_prediction(weekly_contest: str = "weekly-contest-404", username: s
 
     if response.status_code == 200:
         data = response.json()
-        return JSONResponse(content=data)
+        unique_data = {entry['_id']: entry for entry in data}.values()
+
+        return JSONResponse(content=list(unique_data))
     else:
         raise HTTPException(
             status_code=500, detail="Failed to fetch data from the API")
