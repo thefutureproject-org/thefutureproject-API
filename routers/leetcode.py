@@ -126,8 +126,16 @@ async def get_prediction(weekly_contest: str = "weekly-contest-404", username: s
     if response.status_code == 200:
         data = response.json()
         unique_data = {entry['_id']: entry for entry in data}.values()
+        filtered_data = [
+            {key: value for key, value in entry.items() if key not in [
+                "_id", "insert_time", "predict_time"]}
+            for entry in unique_data
+        ]
 
-        return JSONResponse(content=list(unique_data))
+        if len(filtered_data) == 1:
+            return JSONResponse(content=filtered_data[0])
+
+        return {}
     else:
         raise HTTPException(
             status_code=500, detail="Failed to fetch data from the API")
