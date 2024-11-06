@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from routers import leetcode, stock_data, ocr, ipinfo, spacebin
 from routers import webshot, gfg, morse_code, carbon_code, removebg, codeforces
@@ -15,6 +15,8 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from routers.Database.mongodb import db_client
+from fastapi.responses import RedirectResponse
+
 
 
 @asynccontextmanager
@@ -81,9 +83,9 @@ app.include_router(removebg.router)
 app.include_router(irctc.router)
 
 
-@app.get("/")
-async def main():
-    return {"message": "Welcome to The Future Project. Enjoy our services."}
+@app.get("/", status_code=status.HTTP_301_MOVED_PERMANENTLY)
+async def redirect_root():
+    return RedirectResponse(url="https://api.thefutureproject.tech/redoc")
 
 
 @app.get("/docs", include_in_schema=False)
